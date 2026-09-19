@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Маленькое чудо для тебя ❤️</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;
+background:radial-gradient(circle at top,#fff8fb,#ffd7e7 55%,#f7bfd5);font-family:Arial,sans-serif;color:#653447}
+.scene{text-align:center;width:100%;z-index:2;padding:18px 12px;max-height:100vh;overflow:visible}
+h1{font-size:23px;line-height:1.2;margin:0 0 20px}
+.sub{font-size:15px;color:#8a6170;margin-top:18px;transition:.5s}
+.envelope{width:310px;height:205px;margin:auto;position:relative;cursor:pointer;perspective:900px}
+.back{position:absolute;inset:0;border-radius:16px;background:linear-gradient(145deg,#f7b3ca,#ee8fb2);
+box-shadow:0 18px 45px #9c4d6b44}
+.paper{position:absolute;left:20px;right:20px;bottom:12px;height:175px;background:#fff;
+border-radius:12px;padding:22px 18px;z-index:2;box-shadow:0 6px 20px #8b496020;
+transition:1s cubic-bezier(.2,.8,.2,1);overflow:auto;transform-origin:bottom center}
+.flap{position:absolute;top:0;left:0;width:0;height:0;border-left:155px solid transparent;
+border-right:155px solid transparent;border-top:115px solid #ed87ad;z-index:5;
+transform-origin:top center;transition:1.15s cubic-bezier(.2,.8,.2,1)}
+.front{position:absolute;bottom:0;left:0;width:0;height:0;border-left:155px solid transparent;
+border-right:155px solid transparent;border-bottom:108px solid #f09abc;z-index:4}
+.seal{position:absolute;z-index:6;left:50%;top:92px;transform:translate(-50%,-50%);
+width:52px;height:52px;border-radius:50%;background:#fff;color:#e76f9c;font-size:25px;
+display:flex;align-items:center;justify-content:center;box-shadow:0 5px 15px #8b496033;
+transition:.7s cubic-bezier(.2,.8,.2,1)}
+.letter{opacity:0;transform:translateY(15px);transition:.6s;font-size:15px;line-height:1.48}
+.letter b{font-size:22px}
+.open .flap{transform:rotateX(180deg);z-index:1}
+.open .paper{transform:translateY(-125px);height:310px;box-shadow:0 16px 35px #8b496025}
+.open .back{transform:scaleY(.98);transition:1s}
+.open .seal{transform:translate(-50%,-50%) scale(.2) rotate(25deg);opacity:0}
+.open .letter{opacity:1;transform:translateY(0);transition-delay:.45s}
+.open .front{opacity:.12}
+.open{animation:openGlow 1.2s ease}
+@keyframes openGlow{0%{filter:drop-shadow(0 0 0 transparent)}50%{filter:drop-shadow(0 0 18px #ffb8d2)}100%{filter:drop-shadow(0 0 0 transparent)}}
+.open .seal{opacity:0;transform:translate(-50%,-50%) scale(.5)}
+.choice{display:none;margin-top:20px}
+button{border:0;border-radius:22px;padding:11px 18px;margin:5px;background:#fff;
+color:#c04f7d;font-size:15px;box-shadow:0 5px 15px #8b496022;cursor:pointer}
+.heart{position:fixed;pointer-events:none;font-size:22px;animation:up 3.5s linear forwards}
+@keyframes up{0%{transform:translateY(0) scale(.7);opacity:0}15%{opacity:1}
+100%{transform:translateY(-100vh) rotate(25deg) scale(1.3);opacity:0}}
+.modal{display:none;position:fixed;inset:0;background:#5b304266;z-index:20;align-items:center;justify-content:center;padding:24px}
+.modal.show{display:flex}
+.box{background:#fff9fc;border-radius:24px;padding:28px 22px;max-width:360px;text-align:center;
+box-shadow:0 20px 60px #5b304244;animation:pop .4s ease}
+@keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+.box h2{margin-top:0;color:#c04f7d}
+.secret{font-size:17px;line-height:1.55}
+.close{margin-top:18px;background:#f4a5c1;color:#fff}
+@media (max-width:420px){
+  .envelope{width:290px;height:195px}
+  .flap{border-left-width:145px;border-right-width:145px}
+  .front{border-left-width:145px;border-right-width:145px}
+  .open .paper{transform:translateY(-95px);height:min(300px,43vh)}
+  .letter{font-size:14px;line-height:1.45}
+  .letter b{font-size:20px}
+}
+
+@media (max-height:700px){
+  h1{font-size:20px;margin-bottom:12px}
+  .envelope{transform:scale(.88);transform-origin:top center;margin-bottom:-20px}
+  .open .paper{transform:translateY(-85px);height:42vh;max-height:285px}
+  .sub{margin-top:4px}
+}
+@media (max-height:600px){
+  .envelope{transform:scale(.76);margin-bottom:-42px}
+  .open .paper{transform:translateY(-72px);height:40vh;max-height:240px}
+  .letter{font-size:13px;line-height:1.38}
+  .choice{margin-top:8px}
+}
+</style>
+</head>
+<body>
+<div class="scene">
+<h1>У меня для тебя кое-что есть 💌</h1>
+
+<div class="envelope" id="env" onclick="openLetter()">
+  <div class="back"></div>
+  <div class="paper"><div class="letter">
+    <b>Для тебя, моя любимая ❤️</b><br><br>
+    Я просто хотел напомнить тебе одну вещь: ты очень важна для меня. 💕<br><br>
+    Мне нравится твоя улыбка, твой смех и то, как рядом с тобой даже обычный день становится особенным.<br><br>
+    Поэтому улыбайся чаще, хорошо? ❤️ Твоя улыбка — одна из моих самых любимых вещей в тебе.<br><br>
+    <b>Я очень ценю тебя и хочу, чтобы ты всегда знала, как сильно ты мне дорога. 💗</b>
+  </div></div>
+  <div class="flap"></div><div class="front"></div><div class="seal">❤️</div>
+</div>
+
+<div class="sub" id="hint">Нажми на сердечко на конверте ✨</div>
+<div class="choice" id="choice">
+  <button onclick="secondLetter(event)">💌 У меня есть ещё кое-что</button>
+  <button onclick="burst(event)">Я улыбнулась ❤️</button>
+</div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="box">
+    <h2>А вот и секрет ❤️</h2>
+    <div class="secret">
+      Иногда мне хочется просто остановить время и побыть рядом с тобой ещё немного. ❤️<br><br>
+      Мне очень дороги твои сообщения, твой голос, твой смех и даже самые обычные моменты с тобой. 💕<br><br>
+      Если вдруг день будет не очень хорошим — просто вспомни, что есть человек, которому действительно важно, чтобы ты была счастлива. 💗<br><br>
+      <b>Ты мне очень дорога. И я надеюсь, что эта маленькая записка подарила тебе хотя бы одну улыбку. ❤️</b>
+    </div>
+    <button class="close" onclick="closeModal()">Обратно к сюрпризу ❤️</button>
+  </div>
+</div>
+
+<script>
+function openLetter(){
+ const e=document.getElementById('env');
+ if(e.classList.contains('open')) return;
+ e.classList.add('open');
+ document.getElementById('hint').textContent='И это ещё не всё... ❤️';
+ document.getElementById('choice').style.display='block';
+ for(let i=0;i<20;i++) setTimeout(makeHeart,i*80);
+}
+function secondLetter(ev){
+ ev.stopPropagation();
+ document.getElementById('modal').classList.add('show');
+ for(let i=0;i<12;i++) setTimeout(makeHeart,i*70);
+}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+function makeHeart(){
+ const h=document.createElement('div');h.className='heart';
+ h.textContent=['❤️','💕','💗','💖','💞'][Math.floor(Math.random()*5)];
+ h.style.left=(8+Math.random()*84)+'vw';h.style.bottom='12vh';
+ document.body.appendChild(h);setTimeout(()=>h.remove(),3500);
+}
+function burst(ev){
+ ev.stopPropagation();
+ for(let i=0;i<15;i++){
+  const h=document.createElement('div');h.className='heart';
+  h.textContent=['❤️','💕','✨'][i%3];h.style.left=ev.clientX+(Math.random()-.5)*120+'px';
+  h.style.top=ev.clientY+(Math.random()-.5)*80+'px';h.style.animationDuration='2s';
+  document.body.appendChild(h);setTimeout(()=>h.remove(),2200);
+ }
+ document.getElementById('hint').textContent='Вот теперь точно улыбнулась ❤️';
+}
+</script>
+</body>
+</html>
