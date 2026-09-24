@@ -2,69 +2,158 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>💖 Мини-игра</title>
+
 <style>
 body{
-    font-family:Arial,sans-serif;
-    background:linear-gradient(135deg,#ff9ecf,#ffd6e8);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    margin:0;
+margin:0;
+overflow:hidden;
+font-family:Arial,sans-serif;
+background:linear-gradient(180deg,#ffd6e8,#ffeef7);
 }
-.card{
-    background:#fff;
-    padding:25px;
-    border-radius:20px;
-    text-align:center;
-    width:320px;
-    box-shadow:0 10px 25px rgba(0,0,0,.2);
+
+.cat{
+position:fixed;
+font-size:35px;
+animation:fly linear infinite;
+pointer-events:none;
 }
+
+@keyframes fly{
+0%{transform:translateX(-100px);}
+100%{transform:translateX(calc(100vw + 100px));}
+}
+
+.box{
+position:relative;
+z-index:10;
+max-width:420px;
+margin:40px auto;
+background:white;
+padding:25px;
+border-radius:20px;
+box-shadow:0 0 20px rgba(0,0,0,.2);
+text-align:center;
+}
+
 button{
-    display:block;
-    width:100%;
-    margin:10px 0;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    background:#ff5c93;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
+margin:8px;
+padding:12px 18px;
+border:none;
+border-radius:12px;
+background:#ff5f96;
+color:white;
+font-size:17px;
+cursor:pointer;
 }
+
 button:hover{
-    background:#ff3f80;
+transform:scale(1.05);
 }
-#result{
-    margin-top:20px;
-    font-size:18px;
-    font-weight:bold;
-    color:#ff3f80;
+
+#hearts{
+font-size:30px;
+margin:15px;
+}
+
+.hidden{
+display:none;
+}
+
+h1{
+color:#ff4f8b;
 }
 </style>
 </head>
+
 <body>
 
-<div class="card">
-<h2>💖 Мини-игра</h2>
-<p>Как думаешь, что делает мой день лучше?</p>
+<div id="cats"></div>
 
-<button onclick="show()">🌸 Хорошая погода</button>
-<button onclick="show()">🎵 Любимая музыка</button>
-<button onclick="show()">🍫 Что-нибудь вкусное</button>
-<button onclick="show()">💬 Сообщение от тебя</button>
+<div class="box">
 
-<div id="result"></div>
+<h1>🐱 Добро пожаловать</h1>
+
+<p>Миссия: набери 5 сердечек ❤️</p>
+
+<div id="hearts">🤍🤍🤍🤍🤍</div>
+
+<div id="game">
+
+<h3>Вопрос 1</h3>
+<p>Что поднимает настроение?</p>
+
+<button onclick="next()">Музыка 🎵</button>
+<button onclick="next()">Вкусняшки 🍫</button>
+<button onclick="next()">Сообщение 😊</button>
+
+</div>
+
+<div id="end" class="hidden">
+<h2>🎉 Ты прошла игру!</h2>
+
+<p>
+Если честно...
+</p>
+
+<h2 style="color:#ff4f8b">
+Мне кажется, что самый лучший приз —
+твоя улыбка. 😊❤️
+</h2>
+
+<button onclick="confetti()">
+Нажми на сюрприз 🎁
+</button>
+
+<p id="final"></p>
+
+</div>
+
 </div>
 
 <script>
-function show(){
-document.getElementById("result").innerHTML=
-"✨ Правильного ответа нет... Но если честно, больше всего мой день делает лучше сообщение от тебя. ❤️😊";
-}
-</script>
 
-</body>
-</html>
+const questions=[
+["Какой цвет красивее?","💗 Розовый","💙 Голубой","💜 Фиолетовый"],
+["Что лучше вечером?","🍕 Пицца","🍿 Фильм","🌅 Прогулка"],
+["Что делает день счастливее?","😊 Улыбка","☕ Кофе","🎶 Музыка"],
+["Кто сегодня заслуживает комплимент?","🙈 Я","😊 Ты","😺 Котик"]
+];
+
+let step=0;
+
+function next(){
+
+step++;
+
+let hearts="";
+
+for(let i=0;i<step;i++) hearts+="❤️";
+for(let i=step;i<5;i++) hearts+="🤍";
+
+document.getElementById("hearts").innerHTML=hearts;
+
+if(step==5){
+document.getElementById("game").style.display="none";
+document.getElementById("end").classList.remove("hidden");
+return;
+}
+
+let q=questions[step-1];
+
+document.getElementById("game").innerHTML=`
+<h3>Вопрос ${step+1}</h3>
+<p>${q[0]}</p>
+
+<button onclick="next()">${q[1]}</button>
+<button onclick="next()">${q[2]}</button>
+<button onclick="next()">${q[3]}</button>
+`;
+
+}
+
+function confetti(){
+
+document.getElementById("final").innerHTML=
+"💖 Спасибо, что дошла до конца. Надеюсь, эта маленькая игра смогла подар
